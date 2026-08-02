@@ -1,0 +1,13 @@
+{
+  "name": "sauberei-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "check": "node --check script.js && node --check server.mjs && node --check build.mjs",
+    "build": "node build.mjs",
+    "preview": "node server.mjs dist"
+  }
+}

@@ -1,0 +1,34 @@
+# Dependencies and build output
+node_modules/
+dist/
+.vite/
+
+# Local QA, browser output, and temporary media
+artifacts/
+playwright-report/
+test-results/
+coverage/
+*.trace
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+assets/source-media/
+
+# Local configuration and credentials
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Internal project notes
+APPROVED_DIRECTION.md
