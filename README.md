@@ -54,9 +54,9 @@ server.mjs    Lokaler Dev-/Preview-Server
 
 ## Inhalte pflegen
 
-- **Kontakt, Einsatzgebiet, Rechtliches, Formular-Endpunkt:** `config.js` → `business`
-- **Leistungen:** `config.js` → `services`
-- **FAQ:** `config.js` → `faqs`
+- **Kontakt, Einsatzgebiet, Rechtliches, Formular-Endpunkt:** `config.js`: `business`
+- **Leistungen:** `config.js`: `services`
+- **FAQ:** `config.js`: `faqs`
 - **Hero-Medium:** `assets/cleaning-hero.mp4`
 - **Hero-Poster:** `assets/hero-poster.jpg`
 

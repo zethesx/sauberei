@@ -1,0 +1,15 @@
+.icon-sprite { position:absolute; width:0; height:0; overflow:hidden; pointer-events:none; }
+.ui-icon { display:inline-block; width:1em; height:1em; flex:0 0 auto; overflow:visible; vertical-align:-.13em; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.ui-icon path { vector-effect:non-scaling-stroke; }
+.button .ui-icon { width:17px; height:17px; stroke-width:1.75; }
+.text-link .ui-icon { width:20px; height:20px; stroke-width:1.7; transition:transform .25s var(--ease); }
+.text-link:hover .ui-icon { transform:translateX(5px); }
+.round-control { display:inline-grid; place-items:center; }
+.round-control .ui-icon { width:18px; height:18px; stroke-width:1.65; }
+.contact-trigger .ui-icon { width:19px; height:19px; stroke-width:1.7; }
+.close-contact .ui-icon { width:19px; height:19px; stroke-width:1.65; }
+.footer-meta button { display:inline-flex; align-items:center; gap:8px; }
+.footer-meta button .ui-icon { width:14px; height:14px; stroke-width:1.65; }
+.local-tape .ui-icon--burst { width:.55em; height:.55em; stroke-width:1.45; vertical-align:-.08em; }
+.service-card h3::after { content:none; }
+.service-card__arrow { display:block; width:.43em; height:.43em; margin-top:.38em; stroke-width:1.7; vertical-align:baseline; }

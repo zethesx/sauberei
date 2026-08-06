@@ -2,6 +2,7 @@ import { business, services, faqs } from './config.js';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
+const icon = (name, className = '') => `<svg class="ui-icon ui-icon--${name}${className ? ` ${className}` : ''}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-${name}"></use></svg>`;
 
 // The 18 MB cinematic source is a desktop enhancement only. Small screens keep
 // the locally generated poster, preserving the art direction without the decode cost.
@@ -19,7 +20,7 @@ let activeService = 0;
 serviceStage.innerHTML = services.map((service, index) => `
   <article class="service-card ${index === 0 ? 'is-active' : 'is-future'}" data-service-index="${index}" aria-roledescription="Folie" aria-label="${index + 1} von ${services.length}: ${service.title}">
     <span class="service-number">${service.number}</span>
-    <h3>${service.title}</h3>
+    <h3>${service.title}${icon('arrow-down-right', 'service-card__arrow')}</h3>
     <div class="service-detail"><p>${service.lead}</p><small>${service.text}</small></div>
     <button type="button" aria-label="${service.title} anzeigen"></button>
   </article>`).join('');
@@ -272,7 +273,7 @@ form.addEventListener('submit', async event => {
   const submit = $('.form-submit', form);
   if (!business.formEndpoint) { message.textContent = 'Die Nachricht wurde noch nicht gesendet: Für Sauberei ist noch kein Formular-Endpunkt hinterlegt. Bitte nutze aktuell die E-Mail- oder Telefonangabe unten.'; message.classList.add('notice'); return; }
   submit.disabled = true; submit.innerHTML = 'Wird gesendet …'; message.textContent = '';
-  try { const response = await fetch(business.formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(form))) }); if (!response.ok) throw new Error('Request failed'); form.reset(); message.textContent = 'Danke – deine Anfrage wurde gesendet.'; } catch { message.textContent = 'Das Senden hat leider nicht funktioniert. Bitte versuche es später erneut oder nutze unsere direkten Kontaktdaten.'; message.classList.add('error'); } finally { submit.disabled = false; submit.innerHTML = 'Anfrage senden <b>↗</b>'; }
+  try { const response = await fetch(business.formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(form))) }); if (!response.ok) throw new Error('Request failed'); form.reset(); message.textContent = 'Danke – deine Anfrage wurde gesendet.'; } catch { message.textContent = 'Das Senden hat leider nicht funktioniert. Bitte versuche es später erneut oder nutze unsere direkten Kontaktdaten.'; message.classList.add('error'); } finally { submit.disabled = false; submit.innerHTML = `Anfrage senden ${icon('arrow-up-right')}`; }
 });
 
 $('[data-back-top]').addEventListener('click', () => window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));

@@ -11,7 +11,7 @@ if (!output.startsWith(`${root}${sep}`)) {
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 
-for (const file of ['index.html', 'styles.css', 'script.js', 'config.js']) {
+for (const file of ['index.html', 'styles.css', 'icons.css', 'script.js', 'config.js']) {
   await cp(resolve(root, file), resolve(output, file));
 }
 
