@@ -114,3 +114,13 @@ section.process .process-list li { padding:0 !important; display:block; overflow
 
 /* Non-interactive trap field plus existing form-status palette. */
 .honeypot { position:absolute !important; width:1px !important; height:1px !important; margin:-1px !important; padding:0 !important; overflow:hidden !important; clip:rect(0 0 0 0) !important; white-space:nowrap !important; border:0 !important; pointer-events:none !important; }.form-message.success { color:#315f31; }
+/* Footer credit is centered against the page, independently of the left copyright line. */
+.footer-bottom { position:relative; z-index:1; min-height:1.2em; margin-top:55px; color:#aaa9a1; font:400 9px var(--mono); letter-spacing:.04em; }
+.footer-bottom .copyright,.footer-credit { margin:0; color:inherit; font:inherit; letter-spacing:inherit; }
+.footer-credit { position:absolute; left:50%; top:0; transform:translateX(-50%); white-space:nowrap; }
+.footer-credit a { border-bottom:1px solid transparent; transition:border-color .25s var(--ease),color .25s var(--ease); }
+.footer-credit a:hover,.footer-credit a:focus-visible { color:var(--paper); border-color:var(--acid); }
+@media (max-width:760px) {
+  .footer-bottom { display:grid; gap:8px; min-height:0; padding-right:calc(var(--floating-contact-safe-zone) + 4px); }
+  .footer-credit { position:static; transform:none; white-space:normal; }
+}
