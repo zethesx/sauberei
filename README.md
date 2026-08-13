@@ -26,21 +26,14 @@ npm run preview
 
 `npm run build` erzeugt die statische Auslieferung in `dist/`. `npm run preview` bedient genau diesen Build lokal unter Port 4173.
 
-## Cloudflare Workers Static Assets
+## Historische alternative Deployment-Konfiguration
 
-Die versionierte [wrangler.jsonc](wrangler.jsonc) setzt das einzige statische Assets-Verzeichnis explizit auf `./dist`. Das Repository-Root darf **nie** als Assets-Verzeichnis verwendet werden.
+Die versionierte [wrangler.jsonc](wrangler.jsonc) dokumentiert eine frühere optionale Static-Assets-Konfiguration mit `./dist` als einzigem Assets-Verzeichnis. Sie wird nicht für das aktuelle Live-Hosting verwendet: Die öffentliche Website wird bei IONOS gehostet. Das Repository-Root darf in keiner statischen Deployment-Konfiguration als Assets-Verzeichnis verwendet werden.
 
 - **Install:** `npm ci`
-- **Deploy:** `npm run deploy`
-
-Der Deploy-Befehl baut zuerst und ruft danach `wrangler deploy` ohne ein Assets-Verzeichnis als Kommandoargument auf. Wrangler liest `assets.directory` aus `wrangler.jsonc` und stellt dadurch ausschließlich den Inhalt von `dist/` bereit.
-
-- **Deployment command:** `npm run deploy`
-- **Static assets:** `./dist` aus `wrangler.jsonc`
 - **Node.js:** 22 oder neuer
 
 Es sind keine Build- oder Runtime-Umgebungsvariablen erforderlich. Eine spätere Formularintegration kann einen eigenen HTTPS-Endpunkt verwenden; siehe unten.
-
 ## Projektstruktur
 
 ```text
