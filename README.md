@@ -62,16 +62,18 @@ server.mjs    Lokaler Dev-/Preview-Server
 
 Das Video muss ein stummes, querformatiges MP4 für eine Endlosschleife sein. Die Einbindung in `index.html` nutzt `autoplay`, `muted`, `loop`, `playsinline`, `preload="metadata"` und das Poster. Ursprungsmedien gehören lokal in `assets/source-media/`; dieser Ordner wird nicht veröffentlicht.
 
-## Kontaktformular
+## Kontaktformular und Kontakt
+
+Die öffentliche Kontaktadresse ist [info@sauberei.eu](mailto:info@sauberei.eu) und wird zentral über `business.email` in `config.js` gepflegt. Die Website bietet ausschließlich Kontakt per E-Mail.
 
 Ohne `business.formEndpoint` wird keine erfolgreiche Übermittlung vorgetäuscht. Das Formular validiert lokal und zeigt offen an, dass noch kein Versanddienst verbunden ist. Sobald ein echter HTTPS-Endpunkt hinterlegt wird, sendet die Website JSON per POST; der Endpunkt muss CORS erlauben und mit einem 2xx-Status antworten.
 
-## Vor dem Launch ersetzen
+## Rechtliches vor dem Launch ergänzen
 
-- `hallo@sauberei.de`
-- `+49 000 000000`
 - konkretes Einsatzgebiet
-- Impressum und Datenschutz
+- vollständige Angaben zur verantwortlichen Stelle in `business.legal.controller` (Name und ladungsfähige Anschrift)
+- ein rechtlich geprüftes Impressum mit den tatsächlichen Unternehmensdaten
+- Datenschutz aktualisieren, sobald Hosting, Tracking oder `business.formEndpoint` geändert werden
 - optional: `business.formEndpoint`
 
 ## Veröffentlichung prüfen

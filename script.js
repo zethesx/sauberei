@@ -57,7 +57,6 @@ $$('.faq-question', faqRoot).forEach(button => button.addEventListener('click', 
 
 // Editable business details from config.js.
 $$('[data-email]').forEach(link => { link.textContent = business.email; link.href = `mailto:${business.email}`; });
-$$('[data-phone]').forEach(link => { link.textContent = business.phone; link.href = `tel:${business.phoneHref}`; });
 $('[data-year]').textContent = new Date().getFullYear();
 
 const header = $('[data-header]');
@@ -255,15 +254,27 @@ function cycleHeroWord() { if (document.hidden || matchMedia('(prefers-reduced-m
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { wordTimer = window.setInterval(cycleHeroWord, 4100); document.addEventListener('visibilitychange', () => { if (document.hidden) { clearInterval(wordTimer); } else { wordTimer = window.setInterval(cycleHeroWord, 4100); } }); }
 
 const layer = $('[data-contact-layer]'); const panel = $('.contact-panel'); const trigger = $('.contact-trigger'); let lastFocus;
-const focusables = () => $$('button, [href], input, select, textarea', panel).filter(el => !el.disabled);
+const privacyLayer = $('[data-privacy-layer]'); const privacyPanel = $('.legal-panel'); let lastPrivacyFocus;
+const panelFocusables = target => $$('button, [href], input, select, textarea', target).filter(element => !element.disabled);
+function trapFocus(event, target) {
+  const list = panelFocusables(target); if (!list.length) return;
+  const first = list[0]; const last = list[list.length - 1];
+  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+}
 function openContact() { lastFocus = document.activeElement; layer.classList.add('is-open'); layer.setAttribute('aria-hidden', 'false'); document.body.classList.add('modal-open'); window.setTimeout(() => $('.close-contact', panel).focus(), 180); }
 function closeContact() { layer.classList.remove('is-open'); layer.setAttribute('aria-hidden', 'true'); document.body.classList.remove('modal-open'); window.setTimeout(() => (lastFocus || trigger).focus(), 650); }
+function openPrivacy() { const active = document.activeElement; lastPrivacyFocus = active instanceof HTMLElement && active !== document.body ? active : $('[data-open-privacy]'); privacyLayer.classList.add('is-open'); privacyLayer.setAttribute('aria-hidden', 'false'); document.body.classList.add('modal-open'); window.setTimeout(() => $('.close-legal', privacyPanel).focus(), 160); }
+function closePrivacy() { privacyLayer.classList.remove('is-open'); privacyLayer.setAttribute('aria-hidden', 'true'); document.body.classList.remove('modal-open'); window.setTimeout(() => (lastPrivacyFocus || $('[data-open-privacy]')).focus(), 420); }
 $$('[data-open-contact]').forEach(button => button.addEventListener('click', openContact));
 $$('[data-close-contact]').forEach(button => button.addEventListener('click', closeContact));
+$$('[data-open-privacy]').forEach(button => button.addEventListener('click', openPrivacy));
+$$('[data-close-privacy]').forEach(button => button.addEventListener('click', closePrivacy));
 document.addEventListener('keydown', event => {
+  if (privacyLayer.classList.contains('is-open')) { if (event.key === 'Escape') { event.preventDefault(); closePrivacy(); } if (event.key === 'Tab') trapFocus(event, privacyPanel); return; }
   if (!layer.classList.contains('is-open')) return;
   if (event.key === 'Escape') { event.preventDefault(); closeContact(); }
-  if (event.key === 'Tab') { const list = focusables(); const first = list[0]; const last = list[list.length - 1]; if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); } else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); } }
+  if (event.key === 'Tab') trapFocus(event, panel);
 });
 
 const form = $('[data-contact-form]'); const message = $('[data-form-message]');
@@ -271,7 +282,7 @@ form.addEventListener('submit', async event => {
   event.preventDefault(); message.className = 'form-message';
   if (!form.checkValidity()) { form.reportValidity(); message.textContent = 'Bitte prüfe die markierten Pflichtfelder.'; message.classList.add('error'); return; }
   const submit = $('.form-submit', form);
-  if (!business.formEndpoint) { message.textContent = 'Die Nachricht wurde noch nicht gesendet: Für Sauberei ist noch kein Formular-Endpunkt hinterlegt. Bitte nutze aktuell die E-Mail- oder Telefonangabe unten.'; message.classList.add('notice'); return; }
+  if (!business.formEndpoint) { message.textContent = 'Die Nachricht wurde noch nicht gesendet: Für Sauberei ist noch kein Formular-Endpunkt hinterlegt. Bitte nutze aktuell die E-Mail-Adresse unten.'; message.classList.add('notice'); return; }
   submit.disabled = true; submit.innerHTML = 'Wird gesendet …'; message.textContent = '';
   try { const response = await fetch(business.formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(form))) }); if (!response.ok) throw new Error('Request failed'); form.reset(); message.textContent = 'Danke – deine Anfrage wurde gesendet.'; } catch { message.textContent = 'Das Senden hat leider nicht funktioniert. Bitte versuche es später erneut oder nutze unsere direkten Kontaktdaten.'; message.classList.add('error'); } finally { submit.disabled = false; submit.innerHTML = `Anfrage senden ${icon('arrow-up-right')}`; }
 });

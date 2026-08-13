@@ -3,11 +3,13 @@ export const business = {
   name: 'Sauberei',
   descriptor: 'Reinigung, die sich richtig anfühlt.',
   serviceArea: 'In deiner Nähe',
-  email: 'hallo@sauberei.de', // TODO: echte E-Mail-Adresse eintragen
-  phone: '+49 000 000000', // TODO: echte Telefonnummer eintragen
-  phoneHref: '+49000000000',
+  email: 'info@sauberei.eu',
   formEndpoint: '', // TODO: echten POST-Endpunkt eintragen. Leer = ehrlich sichtbarer Integrationshinweis.
-  legal: { imprint: '#impressum', privacy: '#datenschutz' }
+  legal: {
+    imprint: '#impressum',
+    privacy: '#datenschutz',
+    controller: { name: '', address: '' }
+  }
 };
 
 export const services = [
