@@ -6,10 +6,7 @@ const root = resolve(process.argv[2] || process.cwd());
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.mp4': 'video/mp4', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.woff2': 'font/woff2' };
 const server = createServer(async (req, res) => {
   const raw = new URL(req.url || '/', 'http://localhost').pathname;
-  if (raw === '/api/contact.php') {
-    res.writeHead(501, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-cache' });
-    return res.end(JSON.stringify({ ok: false, message: 'Der lokale Preview führt PHP nicht aus. Bitte teste den Versand auf dem IONOS-Hosting.' }));
-  }
+
   const pathname = raw === '/' ? '/index.html' : raw;
   const file = normalize(join(root, pathname));
   if (!file.startsWith(`${root}\\`) && file !== root) { res.writeHead(403); return res.end('Forbidden'); }

@@ -286,8 +286,12 @@ function contactPayload() {
     service: form.elements.service.value,
     message: form.elements.message.value,
     consent: form.elements.consent.checked,
-    website: form.elements.website.value
+    _gotcha: form.elements['_gotcha'].value
   };
+}
+function formSubmissionError(result) {
+  const details = Array.isArray(result?.errors) ? result.errors.map(item => item?.message).filter(Boolean).join(' ') : '';
+  return details || result?.message || 'Das hat gerade nicht geklappt. Schreib uns alternativ direkt an info@sauberei.eu.';
 }
 form.addEventListener('submit', async event => {
   event.preventDefault(); message.className = 'form-message';
@@ -304,7 +308,7 @@ form.addEventListener('submit', async event => {
       body: JSON.stringify(contactPayload())
     });
     const result = await response.json().catch(() => null);
-    if (!response.ok || !result?.ok) throw new Error(result?.message || 'Das hat gerade nicht geklappt. Schreib uns alternativ direkt an info@sauberei.eu.');
+    if (!response.ok || !result?.ok) throw new Error(formSubmissionError(result));
     form.reset(); message.textContent = result.message || 'Danke! Deine Anfrage ist bei uns angekommen. Wir melden uns so schnell wie möglich.'; message.className = 'form-message success';
   } catch (error) {
     message.textContent = error instanceof Error && error.message ? error.message : 'Das hat gerade nicht geklappt. Schreib uns alternativ direkt an info@sauberei.eu.';

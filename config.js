@@ -4,7 +4,7 @@ export const business = {
   descriptor: 'Reinigung, die sich richtig anfühlt.',
   serviceArea: 'In deiner Nähe',
   email: 'info@sauberei.eu',
-  formEndpoint: '/api/contact.php',
+  formEndpoint: 'https://formspree.io/f/xoealaay',
   legal: {
     imprint: '#impressum',
     privacy: '#datenschutz',

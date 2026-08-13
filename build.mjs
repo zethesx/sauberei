@@ -17,9 +17,7 @@ for (const file of ['index.html', 'styles.css', 'icons.css', 'script.js', 'confi
 
 await cp(resolve(root, 'assets'), resolve(output, 'assets'), {
   recursive: true,
-  filter: source => !source.includes(`${sep}source-media${sep}`)
+  filter: source => !source.split(sep).includes('source-media')
 });
-
-await cp(resolve(root, 'api'), resolve(output, 'api'), { recursive: true });
 
 console.log('Built static production files in dist/.');
