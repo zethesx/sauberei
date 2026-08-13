@@ -20,4 +20,6 @@ await cp(resolve(root, 'assets'), resolve(output, 'assets'), {
   filter: source => !source.includes(`${sep}source-media${sep}`)
 });
 
+await cp(resolve(root, 'api'), resolve(output, 'api'), { recursive: true });
+
 console.log('Built static production files in dist/.');

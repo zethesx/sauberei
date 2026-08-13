@@ -278,15 +278,41 @@ document.addEventListener('keydown', event => {
 });
 
 const form = $('[data-contact-form]'); const message = $('[data-form-message]');
+const submitMarkup = `Anfrage senden ${icon('arrow-up-right')}`;
+function contactPayload() {
+  return {
+    name: form.elements.name.value,
+    email: form.elements.email.value,
+    service: form.elements.service.value,
+    message: form.elements.message.value,
+    consent: form.elements.consent.checked,
+    website: form.elements.website.value
+  };
+}
 form.addEventListener('submit', async event => {
   event.preventDefault(); message.className = 'form-message';
   if (!form.checkValidity()) { form.reportValidity(); message.textContent = 'Bitte prüfe die markierten Pflichtfelder.'; message.classList.add('error'); return; }
   const submit = $('.form-submit', form);
-  if (!business.formEndpoint) { message.textContent = 'Die Nachricht wurde noch nicht gesendet: Für Sauberei ist noch kein Formular-Endpunkt hinterlegt. Bitte nutze aktuell die E-Mail-Adresse unten.'; message.classList.add('notice'); return; }
-  submit.disabled = true; submit.innerHTML = 'Wird gesendet …'; message.textContent = '';
-  try { const response = await fetch(business.formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(form))) }); if (!response.ok) throw new Error('Request failed'); form.reset(); message.textContent = 'Danke – deine Anfrage wurde gesendet.'; } catch { message.textContent = 'Das Senden hat leider nicht funktioniert. Bitte versuche es später erneut oder nutze unsere direkten Kontaktdaten.'; message.classList.add('error'); } finally { submit.disabled = false; submit.innerHTML = `Anfrage senden ${icon('arrow-up-right')}`; }
+  if (submit.disabled) return;
+  submit.disabled = true; submit.setAttribute('aria-busy', 'true'); submit.innerHTML = `Wird gesendet ${icon('arrow-up-right')}`;
+  message.textContent = 'Deine Anfrage wird gesendet …'; message.classList.add('notice');
+  try {
+    const response = await fetch(business.formEndpoint, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(contactPayload())
+    });
+    const result = await response.json().catch(() => null);
+    if (!response.ok || !result?.ok) throw new Error(result?.message || 'Das hat gerade nicht geklappt. Schreib uns alternativ direkt an info@sauberei.eu.');
+    form.reset(); message.textContent = result.message || 'Danke! Deine Anfrage ist bei uns angekommen. Wir melden uns so schnell wie möglich.'; message.className = 'form-message success';
+  } catch (error) {
+    message.textContent = error instanceof Error && error.message ? error.message : 'Das hat gerade nicht geklappt. Schreib uns alternativ direkt an info@sauberei.eu.';
+    message.className = 'form-message error';
+  } finally {
+    submit.disabled = false; submit.removeAttribute('aria-busy'); submit.innerHTML = submitMarkup;
+  }
 });
-
 $('[data-back-top]').addEventListener('click', () => window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
 
 // A small magnetic response, only when a precise pointer exists. It never moves focusable controls far from their hit area.

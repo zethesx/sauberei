@@ -33,11 +33,12 @@ Die versionierte [wrangler.jsonc](wrangler.jsonc) dokumentiert eine frühere opt
 - **Install:** `npm ci`
 - **Node.js:** 22 oder neuer
 
-Es sind keine Build- oder Runtime-Umgebungsvariablen erforderlich. Eine spätere Formularintegration kann einen eigenen HTTPS-Endpunkt verwenden; siehe unten.
+Es sind keine Build- oder Runtime-Umgebungsvariablen erforderlich. Der Formularendpunkt wird serverseitig über IONOS PHP bereitgestellt; siehe unten.
 ## Projektstruktur
 
 ```text
 assets/       Hero-Video und Poster
+api/contact.php PHP-Endpunkt für den IONOS-Formularversand
 config.js     Bearbeitbare Unternehmens-, Leistungs- und FAQ-Daten
 styles.css    Gestaltung und Responsive-Regeln
 script.js     Interaktionen, Navigation, Form- und Motion-Logik
@@ -57,17 +58,19 @@ Das Video muss ein stummes, querformatiges MP4 für eine Endlosschleife sein. Di
 
 ## Kontaktformular und Kontakt
 
-Die öffentliche Kontaktadresse ist [info@sauberei.eu](mailto:info@sauberei.eu) und wird zentral über `business.email` in `config.js` gepflegt. Die Website bietet ausschließlich Kontakt per E-Mail.
+Die öffentliche Kontaktadresse ist [info@sauberei.eu](mailto:info@sauberei.eu) und wird zentral über `business.email` in `config.js` gepflegt. Das Formular sendet JSON an den ebenfalls zentral konfigurierten Endpunkt `/api/contact.php`.
 
-Ohne `business.formEndpoint` wird keine erfolgreiche Übermittlung vorgetäuscht. Das Formular validiert lokal und zeigt offen an, dass noch kein Versanddienst verbunden ist. Sobald ein echter HTTPS-Endpunkt hinterlegt wird, sendet die Website JSON per POST; der Endpunkt muss CORS erlauben und mit einem 2xx-Status antworten.
+`api/contact.php` ist ein schlanker IONOS-PHP-Endpunkt. Er validiert die Eingaben serverseitig, nutzt einen Honeypot gegen automatisierte Einsendungen und übergibt E-Mails ausschließlich über `mail()` an `info@sauberei.eu`; der Absender bleibt `Sauberei Website <info@sauberei.eu>`, die Besucheradresse wird nur als `Reply-To` gesetzt. Es sind keine Zugangsdaten im Repository erforderlich.
+
+Der Produktions-Build enthält den Endpunkt unter `dist/api/contact.php`. Für IONOS muss der komplette Inhalt von `dist/` in das Document Root der Domain geladen werden und PHP für diese Domain aktiviert sein. `npm run dev` und `npm run preview` führen PHP bewusst nicht aus und geben für den Endpunkt einen ehrlichen lokalen Hinweis zurück.
 
 ## Rechtliches vor dem Launch ergänzen
 
 - konkretes Einsatzgebiet
 - vollständige Angaben zur verantwortlichen Stelle in `business.legal.controller` (Name und ladungsfähige Anschrift)
 - ein rechtlich geprüftes Impressum mit den tatsächlichen Unternehmensdaten
-- Datenschutz aktualisieren, sobald Hosting, Tracking oder `business.formEndpoint` geändert werden
-- optional: `business.formEndpoint`
+- Datenschutz aktualisieren, sobald Hosting, Tracking oder Formularverarbeitung geändert werden
+- PHP-Ausführung und eine reale Zustellung an `info@sauberei.eu` nach dem IONOS-Upload prüfen
 
 ## Veröffentlichung prüfen
 

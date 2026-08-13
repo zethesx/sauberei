@@ -111,3 +111,6 @@ section.process .process-list li { padding:0 !important; display:block; overflow
   /* Preserve the approved tablet/desktop composition while giving the document enough terminal scroll room for fixed Kontakt. */
   .footer { padding-bottom:110px; }
 }
+
+/* Non-interactive trap field plus existing form-status palette. */
+.honeypot { position:absolute !important; width:1px !important; height:1px !important; margin:-1px !important; padding:0 !important; overflow:hidden !important; clip:rect(0 0 0 0) !important; white-space:nowrap !important; border:0 !important; pointer-events:none !important; }.form-message.success { color:#315f31; }

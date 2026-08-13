@@ -4,7 +4,7 @@ export const business = {
   descriptor: 'Reinigung, die sich richtig anfühlt.',
   serviceArea: 'In deiner Nähe',
   email: 'info@sauberei.eu',
-  formEndpoint: '', // TODO: echten POST-Endpunkt eintragen. Leer = ehrlich sichtbarer Integrationshinweis.
+  formEndpoint: '/api/contact.php',
   legal: {
     imprint: '#impressum',
     privacy: '#datenschutz',
